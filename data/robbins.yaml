@@ -1,0 +1,8 @@
+train: ../Robbins-to-THEMIS/dataset
+val: ../Robbins-to-THEMIS/valid
+
+# number of classes
+nc: 1
+
+# class names
+names: ['crater']
