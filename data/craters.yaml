@@ -1,8 +1,0 @@
-train: data/craters/train
-val: data/craters/valid
-
-# number of classes
-nc: 1
-
-# class names
-names: ['crater']
