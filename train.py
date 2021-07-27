@@ -547,6 +547,7 @@ if __name__ == '__main__':
 
     # Evolve hyperparameters (optional)
     else:
+        print('evolving!!!!!!!')
         # Hyperparameter evolution metadata (mutation scale 0-1, lower_limit, upper_limit)
         meta = {'lr0': (1, 1e-5, 1e-1),  # initial learning rate (SGD=1E-2, Adam=1E-3)
                 'lrf': (1, 0.01, 1.0),  # final OneCycleLR learning rate (lr0 * lrf)
