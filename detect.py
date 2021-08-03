@@ -13,6 +13,7 @@ from utils.general import check_img_size, check_requirements, check_imshow, non_
 from utils.plots import colors, plot_one_box
 from utils.torch_utils import select_device, load_classifier, time_synchronized
 
+from tqdm import tqdm
 
 @torch.no_grad()
 def detect(weights='yolov5s.pt',  # model.pt path(s)
@@ -79,7 +80,7 @@ def detect(weights='yolov5s.pt',  # model.pt path(s)
     if device.type != 'cpu':
         model(torch.zeros(1, 3, imgsz, imgsz).to(device).type_as(next(model.parameters())))  # run once
     t0 = time.time()
-    for path, img, im0s, vid_cap in dataset:
+    for path, img, im0s, vid_cap in tqdm(dataset):
         img = torch.from_numpy(img).to(device)
         img = img.half() if half else img.float()  # uint8 to fp16/32
         img /= 255.0  # 0 - 255 to 0.0 - 1.0
@@ -136,7 +137,7 @@ def detect(weights='yolov5s.pt',  # model.pt path(s)
                             save_one_box(xyxy, imc, file=save_dir / 'crops' / names[c] / f'{p.stem}.jpg', BGR=True)
 
             # Print time (inference + NMS)
-            print(f'{s}Done. ({t2 - t1:.3f}s)')
+            # print(f'{s}Done. ({t2 - t1:.3f}s)')
 
             # Stream results
             if view_img:
