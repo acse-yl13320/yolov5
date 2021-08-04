@@ -1,6 +1,6 @@
 train: ../train.txt
 val: ../valid.txt
-
+test: ../test.txt
 # number of classes
 nc: 1
 

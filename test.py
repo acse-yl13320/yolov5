@@ -8,6 +8,8 @@ import numpy as np
 import torch
 import yaml
 from tqdm import tqdm
+from utils.loss import ComputeLoss
+
 
 from models.experimental import attempt_load
 from utils.datasets import create_dataloader
@@ -31,6 +33,7 @@ def test(data,
          augment=False,  # augmented inference
          verbose=False,  # verbose output
          save_txt=False,  # save results to *.txt
+         save_loss=False,
          save_hybrid=False,  # save label+prediction hybrid results to *.txt
          save_conf=False,  # save confidences in --save-txt labels
          save_json=False,  # save a cocoapi-compatible JSON results file
@@ -45,6 +48,7 @@ def test(data,
          wandb_logger=None,
          compute_loss=None,
          ):
+    
     # Initialize/load model and set device
     training = model is not None
     if training:  # called by train.py
@@ -103,6 +107,11 @@ def test(data,
     p, r, f1, mp, mr, map50, map, t0, t1, t2 = 0., 0., 0., 0., 0., 0., 0., 0., 0., 0.
     loss = torch.zeros(3, device=device)
     jdict, stats, ap, ap_class, wandb_images = [], [], [], [], []
+
+    if save_loss:
+        compute_loss = ComputeLoss(model)
+    loss_list = []
+
     for batch_i, (img, targets, paths, shapes) in enumerate(tqdm(dataloader, desc=s)):
         t_ = time_synchronized()
         img = img.to(device, non_blocking=True)
@@ -117,9 +126,11 @@ def test(data,
         out, train_out = model(img, augment=augment)  # inference and training outputs
         t1 += time_synchronized() - t
 
+        batch_loss = 0
         # Compute loss
         if compute_loss:
-            loss += compute_loss([x.float() for x in train_out], targets)[1][:3]  # box, obj, cls
+            batch_loss, loss_vector = compute_loss([x.float() for x in train_out], targets)
+            loss += loss_vector[:3] # box, obj, cls
 
         # Run NMS
         targets[:, 2:] *= torch.Tensor([width, height, width, height]).to(device)  # to pixels
@@ -155,6 +166,9 @@ def test(data,
                     line = (cls, *xywh, conf) if save_conf else (cls, *xywh)  # label format
                     with open(save_dir / 'labels' / (path.stem + '.txt'), 'a') as f:
                         f.write(('%g ' * len(line)).rstrip() % line + '\n')
+
+            if save_loss:
+                loss_list.append((path.stem, batch_loss / batch_size))
 
             # W&B logging - Media Panel plots
             if len(wandb_images) < log_imgs and wandb_logger.current_epoch > 0:  # Check for test operation
@@ -237,6 +251,13 @@ def test(data,
     pf = '%20s' + '%11i' * 2 + '%11.3g' * 4  # print format
     print(pf % ('all', seen, nt.sum(), mp, mr, map50, map))
 
+    # Save loss
+    loss_list.sort(key=lambda loss: -loss[1])
+    loss_file = open('loss_rank.txt', 'w')
+    for file_name, avg_loss in loss_list:
+        loss_file.write(file_name + ' ' + str(avg_loss) + '\n')
+    loss_file.close()
+
     # Print results per class
     if (verbose or (nc < 50 and not training)) and nc > 1 and len(stats):
         for i, c in enumerate(ap_class):
@@ -305,6 +326,7 @@ if __name__ == '__main__':
     parser.add_argument('--task', default='val', help='train, val, test, speed or study')
     parser.add_argument('--device', default='', help='cuda device, i.e. 0 or 0,1,2,3 or cpu')
     parser.add_argument('--single-cls', action='store_true', help='treat as single-class dataset')
+    parser.add_argument('--save-loss', action='store_true', help='compute loss')
     parser.add_argument('--augment', action='store_true', help='augmented inference')
     parser.add_argument('--verbose', action='store_true', help='report mAP by class')
     parser.add_argument('--save-txt', action='store_true', help='save results to *.txt')
