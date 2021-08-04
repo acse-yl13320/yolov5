@@ -168,7 +168,7 @@ def test(data,
                         f.write(('%g ' * len(line)).rstrip() % line + '\n')
 
             if save_loss:
-                loss_list.append((path.stem, batch_loss / batch_size))
+                loss_list.append((path.stem, batch_loss.cpu().item() / batch_size))
 
             # W&B logging - Media Panel plots
             if len(wandb_images) < log_imgs and wandb_logger.current_epoch > 0:  # Check for test operation
