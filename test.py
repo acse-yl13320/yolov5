@@ -253,10 +253,12 @@ def test(data,
 
     # Save loss
     loss_list.sort(key=lambda loss: -loss[1])
-    loss_file = open('loss_rank.txt', 'w')
+    loss_file_path = 'loss_rank.txt'
+    loss_file = open(loss_file_path, 'w')
     for file_name, avg_loss in loss_list:
         loss_file.write(file_name + ' ' + str(avg_loss) + '\n')
     loss_file.close()
+    print('saved losses to ' + loss_file_path)
 
     # Print results per class
     if (verbose or (nc < 50 and not training)) and nc > 1 and len(stats):
