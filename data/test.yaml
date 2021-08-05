@@ -1,0 +1,6 @@
+test: ../Robbins-to-THEMIS/dataset
+# number of classes
+nc: 1
+
+# class names
+names: ['crater']
