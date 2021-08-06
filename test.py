@@ -167,8 +167,9 @@ def test(data,
                     with open(save_dir / 'labels' / (path.stem + '.txt'), 'a') as f:
                         f.write(('%g ' * len(line)).rstrip() % line + '\n')
 
+            # save loss
             if save_loss:
-                loss_list.append((path.stem, batch_loss.cpu().item() / batch_size))
+                loss_list.append((path.stem, *(loss_vector / batch_size))) # path, box, object, cls, sum
 
             # W&B logging - Media Panel plots
             if len(wandb_images) < log_imgs and wandb_logger.current_epoch > 0:  # Check for test operation
@@ -255,8 +256,8 @@ def test(data,
     loss_list.sort(key=lambda loss: -loss[1])
     loss_file_path = 'loss_rank.txt'
     loss_file = open(loss_file_path, 'w')
-    for file_name, avg_loss in loss_list:
-        loss_file.write(file_name + ' ' + str(avg_loss) + '\n')
+    for loss_turple in loss_list:
+        loss_file.write(','.join(loss_turple) + '\n')
     loss_file.close()
     print('saved losses to ' + loss_file_path)
 
