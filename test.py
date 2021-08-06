@@ -256,7 +256,7 @@ def test(data,
     loss_file_path = 'loss_rank.txt'
     loss_file = open(loss_file_path, 'w')
     for loss_turple in loss_list:
-        loss_file.write(','.join(loss_turple) + '\n')
+        loss_file.write(','.join([str(_) for _ in loss_turple]) + '\n')
     loss_file.close()
     print('saved losses to ' + loss_file_path)
 
