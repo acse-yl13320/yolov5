@@ -253,7 +253,7 @@ def test(data,
 
     # Save loss
     loss_list.sort(key=lambda loss: -loss[-1])
-    loss_file_path = save_dir + os.sep +'loss_rank.txt'
+    loss_file_path = save_dir.stem + os.sep +'loss_rank.txt'
     loss_file = open(loss_file_path, 'w')
     for loss_turple in loss_list:
         loss_file.write(','.join([str(_) for _ in loss_turple]) + '\n')
