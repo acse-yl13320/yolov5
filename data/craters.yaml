@@ -1,6 +1,6 @@
-train: ../train.txt
-val: ../valid.txt
-test: ../test.txt
+train: ../Robbins-to-THEMIS/combined/train.txt
+val: ../Robbins-to-THEMIS/combined/valid.txt
+test: ../Robbins-to-THEMIS/combined/all.txt
 # number of classes
 nc: 1
 
