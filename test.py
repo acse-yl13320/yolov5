@@ -253,7 +253,7 @@ def test(data,
 
     # Save loss
     loss_list.sort(key=lambda loss: -loss[-1])
-    loss_file_path = os.sep.join(['runs', 'test', save_dir.stem, 'loss_rank.txt'])
+    loss_file_path = os.sep.join(['runs', 'test', save_dir.stem, 'loss_rank.csv'])
     loss_file = open(loss_file_path, 'w')
     for loss_turple in loss_list:
         loss_file.write(','.join([str(_) for _ in loss_turple]) + '\n')
