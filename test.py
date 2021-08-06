@@ -253,7 +253,7 @@ def test(data,
     print(pf % ('all', seen, nt.sum(), mp, mr, map50, map))
 
     # Save loss
-    loss_list.sort(key=lambda loss: -loss[1])
+    loss_list.sort(key=lambda loss: -loss[-1])
     loss_file_path = 'loss_rank.txt'
     loss_file = open(loss_file_path, 'w')
     for loss_turple in loss_list:
