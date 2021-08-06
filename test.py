@@ -126,10 +126,9 @@ def test(data,
         out, train_out = model(img, augment=augment)  # inference and training outputs
         t1 += time_synchronized() - t
 
-        batch_loss = 0
         # Compute loss
         if compute_loss:
-            batch_loss, loss_vector = compute_loss([x.float() for x in train_out], targets)
+            loss_vector = compute_loss([x.float() for x in train_out], targets)[1]
             loss += loss_vector[:3] # box, obj, cls
 
         # Run NMS
@@ -169,7 +168,7 @@ def test(data,
 
             # save loss
             if save_loss:
-                loss_list.append((path.stem, *(loss_vector / batch_size))) # path, box, object, cls, sum
+                loss_list.append((path.stem, *(loss_vector.cpu().numpy / batch_size))) # path, box, object, cls, sum
 
             # W&B logging - Media Panel plots
             if len(wandb_images) < log_imgs and wandb_logger.current_epoch > 0:  # Check for test operation
