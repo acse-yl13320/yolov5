@@ -48,7 +48,10 @@ def test(data,
          wandb_logger=None,
          compute_loss=None,
          ):
-    
+    # if save loss per file, batch must be one
+    if save_loss:
+        batch_size = 1
+
     # Initialize/load model and set device
     training = model is not None
     if training:  # called by train.py
@@ -168,7 +171,7 @@ def test(data,
 
             # save loss
             if save_loss:
-                loss_list.append((path.stem, *(loss_vector.cpu().numpy() / batch_size))) # path, box, object, cls, sum
+                loss_list.append((path.stem, *(loss_vector.cpu().numpy()))) # path, box, object, cls, sum
 
             # W&B logging - Media Panel plots
             if len(wandb_images) < log_imgs and wandb_logger.current_epoch > 0:  # Check for test operation
@@ -255,6 +258,7 @@ def test(data,
     loss_list.sort(key=lambda loss: -loss[-1])
     loss_file_path = os.sep.join(['runs', 'test', save_dir.stem, 'loss_rank.csv'])
     loss_file = open(loss_file_path, 'w')
+    loss_file.write('img,box,obj,cls,loss\n')
     for loss_turple in loss_list:
         loss_file.write(','.join([str(_) for _ in loss_turple]) + '\n')
     loss_file.close()
