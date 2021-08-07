@@ -1,0 +1,8 @@
+test: ../Robbins-to-THEMIS/yinze/all.txt
+val: ../Robbins-to-THEMIS/yinze/valid.txt
+train: ../Robbins-to-THEMIS/yinze/train.txt
+# number of classes
+nc: 1
+
+# class names
+names: ['crater']

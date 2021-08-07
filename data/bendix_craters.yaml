@@ -1,8 +1,0 @@
-train: ../bendix_craters/dataset
-val: ../bendix_craters/valid
-
-# number of classes
-nc: 1
-
-# class names
-names: ['crater']
