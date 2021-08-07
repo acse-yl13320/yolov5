@@ -255,14 +255,15 @@ def test(data,
     print(pf % ('all', seen, nt.sum(), mp, mr, map50, map))
 
     # Save loss
-    loss_list.sort(key=lambda loss: -loss[-1])
-    loss_file_path = os.sep.join(['runs', 'test', save_dir.stem, 'loss_rank.csv'])
-    loss_file = open(loss_file_path, 'w')
-    loss_file.write('img,box,obj,cls,loss\n')
-    for loss_turple in loss_list:
-        loss_file.write(','.join([str(_) for _ in loss_turple]) + '\n')
-    loss_file.close()
-    print('saved losses to ' + loss_file_path)
+    if save_loss:
+        loss_list.sort(key=lambda loss: -loss[-1])
+        loss_file_path = os.sep.join(['runs', 'test', save_dir.stem, 'loss_rank.csv'])
+        loss_file = open(loss_file_path, 'w')
+        loss_file.write('img,box,obj,cls,loss\n')
+        for loss_turple in loss_list:
+            loss_file.write(','.join([str(_) for _ in loss_turple]) + '\n')
+        loss_file.close()
+        print('saved losses to ' + loss_file_path)
 
     # Print results per class
     if (verbose or (nc < 50 and not training)) and nc > 1 and len(stats):
