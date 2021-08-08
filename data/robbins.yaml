@@ -1,0 +1,8 @@
+test: ../Robbins-to-THEMIS/robbins
+val: ../Robbins-to-THEMIS/robbins
+train: ../Robbins-to-THEMIS/robbins
+# number of classes
+nc: 1
+
+# class names
+names: ['crater']
