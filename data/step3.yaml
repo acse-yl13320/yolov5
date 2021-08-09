@@ -1,0 +1,8 @@
+test: ../Robbins-to-THEMIS/bendix/final_test.txt
+val: ../Robbins-to-THEMIS/bendix/final_test.txt
+train: ../Robbins-to-THEMIS/bendix/final_test.txt
+# number of classes
+nc: 1
+
+# class names
+names: ['crater']
