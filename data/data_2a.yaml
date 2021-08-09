@@ -1,0 +1,8 @@
+test: ../Robbins-to-THEMIS/combined/data_2a.txt
+val: ../Robbins-to-THEMIS/combined/data_2a.txt
+train: ../Robbins-to-THEMIS/combined/data_2a.txt
+# number of classes
+nc: 1
+
+# class names
+names: ['crater']
