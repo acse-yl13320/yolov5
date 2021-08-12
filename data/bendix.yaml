@@ -1,4 +1,4 @@
-test: ../Robbins-to-THEMIS/bendix/all.txt
+test: ../Robbins-to-THEMIS/bendix/test.txt
 val: ../Robbins-to-THEMIS/bendix/valid.txt
 train: ../Robbins-to-THEMIS/bendix/train.txt
 # number of classes
