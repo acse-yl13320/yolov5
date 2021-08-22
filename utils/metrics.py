@@ -76,6 +76,14 @@ def ap_per_class(tp, conf, pred_cls, target_cls, plot=False, save_dir='.', names
         plot_mc_curve(px, p, Path(save_dir) / 'P_curve.png', names, ylabel='Precision')
         plot_mc_curve(px, r, Path(save_dir) / 'R_curve.png', names, ylabel='Recall')
         
+        print('conf:', px)
+        print('p:', p)
+        print('r:', r)
+
+        print(px.shape)
+        print(p.shape)
+        print(r.shape)
+
         pr_table = pd.DataFrame({'conf': px, 'p': p, 'r': r})
         pr_table.to_csv(Path(save_dir) / 'pr_table.csv')
 
