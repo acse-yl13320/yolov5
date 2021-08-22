@@ -84,7 +84,7 @@ def ap_per_class(tp, conf, pred_cls, target_cls, plot=False, save_dir='.', names
         print(p.shape)
         print(r.shape)
 
-        pr_table = pd.DataFrame({'conf': px, 'p': p, 'r': r})
+        pr_table = pd.DataFrame({'conf': px.flatten(), 'p': p.flatten(), 'r': r.flatten()})
         pr_table.to_csv(Path(save_dir) / 'pr_table.csv')
 
     i = f1.mean(0).argmax()  # max F1 index
