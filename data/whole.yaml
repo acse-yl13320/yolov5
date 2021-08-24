@@ -1,6 +1,6 @@
-test: ../Robbins-to-THEMIS/dataset/
-val: ../Robbins-to-THEMIS/dataset/
-train: ../Robbins-to-THEMIS/dataset/
+test: ../Robbins-to-THEMIS/dataset/all.txt
+val: ../Robbins-to-THEMIS/dataset/valid.txt
+train: ../Robbins-to-THEMIS/dataset/train.txt
 # number of classes
 nc: 1
 

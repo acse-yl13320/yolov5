@@ -1,6 +1,6 @@
 test: ../Robbins-to-THEMIS/bendix/test.txt
 val: ../Robbins-to-THEMIS/bendix/valid_m1.txt
-train: ../Robbins-to-THEMIS/bendix/train_m1.txt
+train: ../Robbins-to-THEMIS/bendix/train_m1.txt 
 # number of classes
 nc: 1
 

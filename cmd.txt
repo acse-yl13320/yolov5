@@ -1,13 +1,10 @@
 python train.py --img 416 416 --batch 16 --epochs 50 --data bendix_craters.yaml --weights yolov5s.pt
 python train.py --img 593 593 --batch 16 --epochs 50 --data craters.yaml --weights yolov5s.pt
 python test.py --weights runs/train/exp/weights/best.pt --data craters.yaml --save-txt --save-conf --save-loss --batch-size 1 --task test
-<<<<<<< Updated upstream
 python detect.py --weights runs/train/exp/weights/best.pt --source ../correct_dataset/images --save-txt --hide-labels --save-conf --nosave
 
-python test.py --name 'best' --weights ./best.pt --data bendix.yaml --task test
-=======
+python test.py --name pics --weights runs\train\m1\weights\last.pt --data bendix.yaml --task test
+
 python detect.py --weights runs/train/combined-v5m/weights/best.pt --source ../Robbins-to-THEMIS/dataset/images --save-txt --hide-labels --save-conf --nosave
 
-
 python test.py --name step4_bendix_v5m --weights runs/train/bendix-v5m/weights/best.pt --batch-size 16 --data whole.yaml --task test --iou-thres 0.2
->>>>>>> Stashed changes

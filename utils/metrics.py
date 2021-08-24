@@ -75,14 +75,6 @@ def ap_per_class(tp, conf, pred_cls, target_cls, plot=False, save_dir='.', names
         plot_mc_curve(px, f1, Path(save_dir) / 'F1_curve.png', names, ylabel='F1')
         plot_mc_curve(px, p, Path(save_dir) / 'P_curve.png', names, ylabel='Precision')
         plot_mc_curve(px, r, Path(save_dir) / 'R_curve.png', names, ylabel='Recall')
-        
-        print('conf:', px)
-        print('p:', p)
-        print('r:', r)
-
-        print(px.shape)
-        print(p.shape)
-        print(r.shape)
 
         pr_table = pd.DataFrame({'conf': px.flatten(), 'p': p.flatten(), 'r': r.flatten()})
         pr_table.to_csv(Path(save_dir) / 'pr_table.csv')
@@ -200,7 +192,7 @@ class ConfusionMatrix:
 
 def plot_pr_curve(px, py, ap, save_dir='pr_curve.png', names=()):
     # Precision-recall curve
-    fig, ax = plt.subplots(1, 1, figsize=(9, 6), tight_layout=True)
+    fig, ax = plt.subplots(1, 1, figsize=(3, 3), tight_layout=True)
     py = np.stack(py, axis=1)
 
     if 0 < len(names) < 21:  # display per-class legend if < 21 classes
@@ -209,18 +201,20 @@ def plot_pr_curve(px, py, ap, save_dir='pr_curve.png', names=()):
     else:
         ax.plot(px, py, linewidth=1, color='grey')  # plot(recall, precision)
 
-    ax.plot(px, py.mean(1), linewidth=3, color='blue', label='all classes %.3f mAP@0.5' % ap[:, 0].mean())
+    ax.plot(px, py.mean(1), linewidth=3, color='blue', label='%.3f mAP@0.5' % ap[:, 0].mean())
     ax.set_xlabel('Recall')
     ax.set_ylabel('Precision')
     ax.set_xlim(0, 1)
     ax.set_ylim(0, 1)
-    plt.legend(bbox_to_anchor=(1.04, 1), loc="upper left")
+    # plt.legend(bbox_to_anchor=(1.04, 1), loc="upper left")
+    plt.legend()
     fig.savefig(Path(save_dir), dpi=250)
 
 
 def plot_mc_curve(px, py, save_dir='mc_curve.png', names=(), xlabel='Confidence', ylabel='Metric'):
     # Metric-confidence curve
-    fig, ax = plt.subplots(1, 1, figsize=(9, 6), tight_layout=True)
+    # fig, ax = plt.subplots(1, 1, figsize=(9, 6), tight_layout=True)
+    fig, ax = plt.subplots(1, 1, figsize=(3, 3), tight_layout=True)
 
     if 0 < len(names) < 21:  # display per-class legend if < 21 classes
         for i, y in enumerate(py):
@@ -229,10 +223,11 @@ def plot_mc_curve(px, py, save_dir='mc_curve.png', names=(), xlabel='Confidence'
         ax.plot(px, py.T, linewidth=1, color='grey')  # plot(confidence, metric)
 
     y = py.mean(0)
-    ax.plot(px, y, linewidth=3, color='blue', label=f'all classes {y.max():.2f} at {px[y.argmax()]:.3f}')
+    ax.plot(px, y, linewidth=3, color='blue', label=f'{y.max():.2f} at {px[y.argmax()]:.3f}')
     ax.set_xlabel(xlabel)
     ax.set_ylabel(ylabel)
     ax.set_xlim(0, 1)
     ax.set_ylim(0, 1)
-    plt.legend(bbox_to_anchor=(1.04, 1), loc="upper left")
+    # plt.legend(bbox_to_anchor=(1.04, 1), loc="upper left")
+    plt.legend()
     fig.savefig(Path(save_dir), dpi=250)
