@@ -179,17 +179,26 @@ class LoadImages:  # for inference
                     ret_val, img0 = self.cap.read()
 
             self.frame += 1
-            print(f'video {self.count + 1}/{self.nf} ({self.frame}/{self.frames}) {path}: ', end='')
+            # print(f'video {self.count + 1}/{self.nf} ({self.frame}/{self.frames}) {path}: ', end='')
 
         else:
             # Read image
             self.count += 1
             img0 = cv2.imread(path)  # BGR
-            assert img0 is not None, 'Image Not Found ' + path
+            # assert img0 is not None, 'Image Not Found ' + path
+            if img0 is not None:
+                pass
+            else:
+                print('Image Not Found ' + path)
             # print(f'image {self.count}/{self.nf} {path}: ', end='')
 
         # Padded resize
-        img = letterbox(img0, self.img_size, stride=self.stride)[0]
+        try:
+            img = letterbox(img0, self.img_size, stride=self.stride)[0]
+        except:
+            print('Image problem!!! ' + path)
+            img0 = cv2.imread(path.replace('images', 'images_backup'))
+            img = letterbox(img0, self.img_size, stride=self.stride)[0]
 
         # Convert
         img = img[:, :, ::-1].transpose(2, 0, 1)  # BGR to RGB, to 3x416x416
@@ -620,7 +629,21 @@ def load_image(self, index):
     if img is None:  # not cached
         path = self.img_files[index]
         img = cv2.imread(path)  # BGR
-        assert img is not None, 'Image Not Found ' + path
+        
+        if img is None:
+            print('Image Not Found ' + path)
+            # from zipfile import ZipFile
+            # p = Path(path)
+            # zip_file_path = str(p.parent) + '.zip'
+            # folder_path = str(p.parent.parent)
+            # print('unzip ' + zip_file_path + ' to ' + folder_path)
+            # with ZipFile(zip_file_path, 'r') as zipObj:
+            #     zipObj.extractall()
+            path = path.replace('images', 'images_backup')
+            print('read images from back up ' + path)
+            img = cv2.imread(path)  # BGR
+            assert img is not None
+
         h0, w0 = img.shape[:2]  # orig hw
         r = self.img_size / max(h0, w0)  # ratio
         if r != 1:  # if sizes are not equal

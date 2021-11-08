@@ -1,0 +1,8 @@
+test: ../csgo-yolo/dataset/all.txt
+val: ../csgo-yolo/dataset/valid.txt
+train: ../csgo-yolo/dataset/train.txt
+# number of classes
+nc: 2
+
+# class names
+names: ['ct', 't']
